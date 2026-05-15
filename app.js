@@ -110,7 +110,11 @@ function wireClassify() {
   const timingEl = $("#classify-timing");
   const result = $("#classify-result");
 
-  const MODEL = "Xenova/mobilenet_v2_1.0_224";
+  // The Xenova/mobilenet_v2_1.0_224 catalogue entry was removed from the
+  // Hugging Face Hub. Switched to Xenova/vit-base-patch16-224 which is still
+  // reachable and ships with a quantised ONNX model file usable from
+  // transformers.js. Slightly larger download (~85 MB) but still tractable.
+  const MODEL = "Xenova/vit-base-patch16-224";
 
   const showImage = (src, label = "Uploaded image") => {
     imgEl.src = src;

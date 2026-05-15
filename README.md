@@ -8,7 +8,7 @@ Three machine learning demos that run entirely in your browser. No server, no AP
 
 Three tabs, each driving a different small model from the [Xenova](https://huggingface.co/Xenova) catalogue through [transformers.js](https://huggingface.co/docs/transformers.js).
 
-1. **Image classification.** MobileNet V2 on ImageNet 1000. About 14 MB. Upload or pick a sample image and the model returns the top five labels with confidence scores.
+1. **Image classification.** Vision Transformer (ViT base, patch 16, 224 px) on ImageNet 1000. About 85 MB. Upload or pick a sample image and the model returns the top five labels with confidence scores.
 2. **Object detection.** DETR with a ResNet 50 backbone, COCO 91 classes. About 167 MB. Upload an image and the model returns bounding boxes with labels and confidence scores, drawn as SVG over the image.
 3. **Sentiment analysis.** DistilBERT fine tuned on SST 2. About 67 MB. Paste a sentence or paragraph and the model returns a positive or negative verdict with a confidence score.
 
