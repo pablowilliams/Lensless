@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Three machine learning demos that run entirely in your browser. Classify an image, detect objects, or analyse the sentiment of a sentence. Nothing leaves your laptop." />
+  <meta name="theme-color" content="#0a0d12" />
+  <meta property="og:title" content="Lensless: machine learning, in your browser, no server" />
+  <meta property="og:description" content="Three local ML demos: image classification, object detection, sentiment analysis. Runs entirely on your device." />
+  <title>Lensless: machine learning, in your browser, no server</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="topbar" role="banner">
+    <div class="topbar-inner">
+      <a href="#top" class="mark" aria-label="Lensless, home">
+        <span class="mark-glyph" aria-hidden="true"></span>
+        <span class="mark-text">Lensless</span>
+      </a>
+      <p class="topbar-meta">Local ML demos, 2026</p>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+
+    <section id="top" class="hero" aria-labelledby="hero-h1">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <p class="kicker">Machine learning, in your browser</p>
+        <h1 id="hero-h1">Models that run on your laptop, not ours.</h1>
+        <p class="hero-lede">Three demos. An image classifier, an object detector, and a sentiment analyser. Each one downloads its model the first time you press a button, then runs every inference locally in WebAssembly or WebGPU. No data leaves your device.</p>
+        <p class="hero-meta">Privacy by construction. Models are quantised ONNX, served from a public CDN. First use downloads between 15 and 170 megabytes per model, then cached. Subsequent runs take a few hundred milliseconds.</p>
+        <a class="cta" href="#demos">Open the demos</a>
+      </div>
+    </section>
+
+    <section id="demos" class="demos" aria-labelledby="demos-h2">
+      <h2 id="demos-h2" class="section-h">Choose a model.</h2>
+      <p class="section-sub">Three tabs, three small models, three jobs. Pick one and follow the inline instructions.</p>
+
+      <div class="tabs">
+        <div role="tablist" aria-label="Machine learning demos" class="tablist">
+          <button type="button" role="tab" id="tab-classify" aria-controls="panel-classify" aria-selected="true" tabindex="0" class="tab is-on">Classify image</button>
+          <button type="button" role="tab" id="tab-detect" aria-controls="panel-detect" aria-selected="false" tabindex="-1" class="tab">Detect objects</button>
+          <button type="button" role="tab" id="tab-sentiment" aria-controls="panel-sentiment" aria-selected="false" tabindex="-1" class="tab">Sentiment</button>
+        </div>
+
+        <!-- CLASSIFY -->
+        <section role="tabpanel" id="panel-classify" aria-labelledby="tab-classify" tabindex="0" class="panel">
+          <header class="panel-head">
+            <h3>Image classification</h3>
+            <p class="panel-model"><code>Xenova/mobilenet_v2_1.0_224</code> &nbsp;·&nbsp; about 14 MB &nbsp;·&nbsp; ImageNet 1000 classes</p>
+          </header>
+
+          <div class="notice" role="note">
+            <p><strong>First use of this tab will download a 14 MB model</strong> to your browser cache. After that, classification takes less than a second.</p>
+          </div>
+
+          <div class="upload-row">
+            <label class="file-zone" for="classify-file">
+              <span class="file-zone-icon" aria-hidden="true">⬆</span>
+              <span class="file-zone-text">Upload an image to classify</span>
+              <span class="file-zone-sub">JPG, PNG, or WEBP. Maximum 8 MB.</span>
+              <input type="file" id="classify-file" accept="image/*" />
+            </label>
+            <p class="or">or</p>
+            <div class="sample-row">
+              <p class="sample-label">Try a sample:</p>
+              <button type="button" class="btn-mini" data-sample="classify" data-img="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=600">Dog</button>
+              <button type="button" class="btn-mini" data-sample="classify" data-img="https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=600">Cat</button>
+              <button type="button" class="btn-mini" data-sample="classify" data-img="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600">Coffee</button>
+            </div>
+          </div>
+
+          <div class="result" id="classify-result" aria-busy="false">
+            <div class="result-image">
+              <img id="classify-img" alt="" hidden />
+              <p class="placeholder" id="classify-placeholder">Your image preview will appear here.</p>
+            </div>
+            <div class="result-data">
+              <p class="status" id="classify-status">Ready. Pick an image to begin.</p>
+              <h4 class="result-h" id="classify-result-h" hidden>Top 5 predictions</h4>
+              <ol class="preds" id="classify-preds"></ol>
+              <p class="timing" id="classify-timing"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- DETECT -->
+        <section role="tabpanel" id="panel-detect" aria-labelledby="tab-detect" tabindex="0" class="panel" hidden>
+          <header class="panel-head">
+            <h3>Object detection</h3>
+            <p class="panel-model"><code>Xenova/detr-resnet-50</code> &nbsp;·&nbsp; about 167 MB &nbsp;·&nbsp; 91 COCO classes</p>
+          </header>
+
+          <div class="notice" role="note">
+            <p><strong>First use of this tab will download a 167 MB model</strong> to your browser cache. The download takes a minute or two on a typical home connection. After that, detection takes 1 to 3 seconds.</p>
+          </div>
+
+          <div class="upload-row">
+            <label class="file-zone" for="detect-file">
+              <span class="file-zone-icon" aria-hidden="true">⬆</span>
+              <span class="file-zone-text">Upload an image to detect objects in</span>
+              <span class="file-zone-sub">JPG, PNG, or WEBP. Maximum 8 MB.</span>
+              <input type="file" id="detect-file" accept="image/*" />
+            </label>
+            <p class="or">or</p>
+            <div class="sample-row">
+              <p class="sample-label">Try a sample:</p>
+              <button type="button" class="btn-mini" data-sample="detect" data-img="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=900">Street scene</button>
+              <button type="button" class="btn-mini" data-sample="detect" data-img="https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=900">Sheep</button>
+              <button type="button" class="btn-mini" data-sample="detect" data-img="https://images.unsplash.com/photo-1517423440428-a5a00ad493e8?w=900">Kitchen</button>
+            </div>
+          </div>
+
+          <div class="result" id="detect-result" aria-busy="false">
+            <div class="result-image detect-stage">
+              <img id="detect-img" alt="" hidden />
+              <svg id="detect-overlay" class="detect-overlay" aria-hidden="true"></svg>
+              <p class="placeholder" id="detect-placeholder">Your image preview will appear here.</p>
+            </div>
+            <div class="result-data">
+              <p class="status" id="detect-status">Ready. Pick an image to begin.</p>
+              <h4 class="result-h" id="detect-result-h" hidden>Detected objects</h4>
+              <ul class="detect-list" id="detect-list"></ul>
+              <p class="timing" id="detect-timing"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- SENTIMENT -->
+        <section role="tabpanel" id="panel-sentiment" aria-labelledby="tab-sentiment" tabindex="0" class="panel" hidden>
+          <header class="panel-head">
+            <h3>Sentiment analysis</h3>
+            <p class="panel-model"><code>Xenova/distilbert-base-uncased-finetuned-sst-2-english</code> &nbsp;·&nbsp; about 67 MB &nbsp;·&nbsp; positive or negative</p>
+          </header>
+
+          <div class="notice" role="note">
+            <p><strong>First use of this tab will download a 67 MB model</strong> to your browser cache. After that, sentences are scored in well under a second each.</p>
+          </div>
+
+          <label class="sent-field" for="sent-input">
+            <span class="sent-label">Enter a sentence or paragraph</span>
+            <textarea id="sent-input" rows="4" placeholder="Type or paste text here. Try a customer review, a tweet, or the first paragraph of a news article.">The new keyboard is genuinely lovely, the spring is precise and the typing feel is everything I hoped for, though the price is steep.</textarea>
+          </label>
+
+          <div class="sent-controls">
+            <button type="button" id="sent-run" class="btn">Analyse sentiment</button>
+            <button type="button" id="sent-clear" class="btn btn-ghost">Clear</button>
+          </div>
+
+          <div class="result result-sentiment" id="sent-result" aria-busy="false">
+            <p class="status" id="sent-status">Ready. Press Analyse sentiment to score the text.</p>
+            <div class="sent-out" id="sent-out" hidden>
+              <p class="sent-verdict" id="sent-verdict"></p>
+              <div class="sent-bars" aria-hidden="true">
+                <div class="sent-bar pos"><span class="sent-bar-label">Positive</span><div class="sent-bar-track"><span id="sent-bar-pos" style="width: 0%"></span></div><span class="sent-bar-val" id="sent-bar-pos-val">0%</span></div>
+                <div class="sent-bar neg"><span class="sent-bar-label">Negative</span><div class="sent-bar-track"><span id="sent-bar-neg" style="width: 0%"></span></div><span class="sent-bar-val" id="sent-bar-neg-val">0%</span></div>
+              </div>
+              <p class="timing" id="sent-timing"></p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <section class="how" aria-labelledby="how-h">
+      <h2 id="how-h" class="section-h">How this works.</h2>
+      <div class="how-grid">
+        <article>
+          <h3>The model</h3>
+          <p>Each tab uses a quantised ONNX model from the Xenova catalogue. ONNX is the open standard format for cross runtime neural networks. Quantisation shrinks the weights to 8 bit integers, which makes them small enough to ship over a CDN and fast enough to run on a laptop.</p>
+        </article>
+        <article>
+          <h3>The runtime</h3>
+          <p>The transformers.js library runs the model in WebAssembly by default, or WebGPU if your browser supports it. The first inference of a session warms up the runtime. Subsequent inferences are an order of magnitude faster.</p>
+        </article>
+        <article>
+          <h3>The privacy story</h3>
+          <p>Your image or text never leaves your machine. The model weights travel one way, from the public CDN to your browser cache. After the first use of a tab, the model can run offline. No telemetry, no analytics, no server logs of your input.</p>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot" role="contentinfo">
+    <p>Lensless, 2026. Built with vanilla HTML, CSS, JavaScript, and the <a href="https://huggingface.co/docs/transformers.js" target="_blank" rel="noopener">transformers.js</a> library. Source on GitHub.</p>
+  </footer>
+
+  <p id="live" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
